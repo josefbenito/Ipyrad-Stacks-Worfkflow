@@ -30,15 +30,16 @@ ATCGG,CGATCC                         ## [8] [restriction_overhang]: Restriction 
                                ## [28] [pop_assign_file]: Path to population assignment file
                                ## [29] [reference_as_filter]: Reads mapped to this reference are removed in step 3
 
-
+#initiate steps 1-7 of ipyrad 
 ipyrad -p params-final.txt -s 1234567 -d -c 32 -t 4
 
 
 ------- Process_radtags and Denovo_map -------------------------------------------
 
-
+#process radtag to clean, trim, filter restriction sites and Illumina adapters
 /home/uahjbb001/stacks-2.68/process_radtags -P -p /home/uahjbb001/Cave_salamander_data -o /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run7_trim70_radrags --renz-1 sphI --renz-2 ecoRI -r -c -q -t 70 --threads 15 --filter-illumina
 
+#denovo map to run the stacks pipline (ustacks, cstacks, sstacks, tsv2bam, gstacks)
 perl /home/uahjbb001/stacks-2.68/bin/denovo_map.pl -m 3 -M 3 -n 3 -T 15 -o /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run8 --popmap /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run8/popmap --samples /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run8 --paired
-
+#populations to run the last populations module of pipline
 populations -P /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run8 -M /home/uahjbb001/Cave_salamander_RADSeq/Stacks/Analysis/Test_run8/popmap -t 15 --vcf --structure --genepop
